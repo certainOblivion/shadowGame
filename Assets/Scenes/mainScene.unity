@@ -566,6 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ff2f636046d1f48af85d8dda9c367a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Velocity: 2
 --- !u!114 &1697446863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,4 +681,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HexScale: 3
   WorldToGridRatio: 0.6
-  EnableDebugDraw: 1

@@ -9,7 +9,6 @@ public class ShadowVisualizer : MonoBehaviour
 {
     public GameObject Light;
 
-    List<Vector2> mTriangle;
     List<ShadowCaster> mShadowCasters;
     VisibilityComputer mVisibility;
     // Use this for initialization
@@ -31,7 +30,6 @@ public class ShadowVisualizer : MonoBehaviour
         }
 
         List<Vector2> encounters = mVisibility.Compute();
-        mTriangle = encounters;
         ShadowHelper.DrawVisibility(encounters.ToArray(), Light.transform.position, Color.cyan);
 
         mVisibility.ClearOccluders();

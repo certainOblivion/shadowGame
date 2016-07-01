@@ -7,7 +7,6 @@ namespace Helper
     {
         public static void DrawVisibility(Vector2[] encounters, Vector2 lightposition, Color color = default(Color))
         {
-            Vector2 [] trianglePoints = new Vector2[3];
             color = DebugDrawHelper.ValidateColor(color);
 
             for (int i = 1; i < encounters.Length; i++)

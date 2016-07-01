@@ -28,6 +28,19 @@ namespace Helper
             return new Point(vector.x, vector.y);
         }
 
+        public static Hex Vector2ToHex(Vector2 pixel, Layout layout)
+        {
+            Point pixelPoint = GridHelper.Vector2ToPoint(pixel);
+            Hex pixelHex = FractionalHex.HexRound(Layout.PixelToHex(layout, pixelPoint));
+
+            return pixelHex;
+        }
+
+        public static Vector2 HexToVector2(Hex hex, Layout layout)
+        {
+             return PointToVector2(Layout.HexToPixel(layout, hex));
+        }
+
         public static void DrawHex(Layout layout, Hex hex, Color color, bool filled = false)
         {
             List<Point> corners = Layout.PolygonCorners(layout, hex);

@@ -80,7 +80,6 @@ namespace Grid
         {
             return (a.q == b.q) && (a.r == b.r) && (a.s == b.s);
         }
-
     }
 
     public struct FractionalHex
@@ -285,15 +284,14 @@ namespace Grid
 
     public struct RectangleMap
     {
-        public RectangleMap(double mapHeight, double mapWidth , float hexScaleDownFactor = 1, float worldToGridRatio = 1)
+        public RectangleMap(double mapWidth, double mapHeight , float hexScaleDownFactor = 1, float worldToGridRatio = 1)
         {
-            Map = CreateMap(mapHeight, mapWidth);
             WorldToGridRatio = worldToGridRatio;
             PointWidth = worldToGridRatio / hexScaleDownFactor;
             MapLayout = new Layout(Layout.pointy, new Point(PointWidth, PointWidth), new Point(-mapWidth / (2*hexScaleDownFactor), -mapHeight / (2*hexScaleDownFactor)));
         }
 
-        public static HashSet<Hex> CreateMap(double map_height, double map_width)
+        public static HashSet<Hex> CreateMap(double map_width, double map_height)
         {
             HashSet<Hex> map = new HashSet<Hex>();
             map_height *= 1.13;
@@ -311,7 +309,6 @@ namespace Grid
 
         public readonly float PointWidth;
         public readonly float WorldToGridRatio;
-        public HashSet<Hex> Map { get; private set; }
         public Layout MapLayout { get; private set; }
     }
 }
