@@ -54,6 +54,14 @@ namespace Helper
             DebugDrawHelper.DrawHex(arrayOfCorners.ToArray(), color, filled);
         }
 
+        public static float AccurateDistance(Hex a, Hex b, Layout layout)
+        {
+            Vector2 pointA = HexToVector2(a, layout);
+            Vector2 pointB = HexToVector2(b, layout);
+
+            return Vector2.SqrMagnitude(pointB - pointA);
+        }
+
         public static Vector2 CopyVector2(Vector2 vector)
         {
             return new Vector2(vector.x, vector.y);

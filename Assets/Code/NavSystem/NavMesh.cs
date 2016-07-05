@@ -11,7 +11,11 @@ public class NavMesh : MonoBehaviour {
     private List<NavMeshObstacle> mNavObstacles;
     private List<NavMeshActor> mNavMeshActors;
     NavMeshPath mNavMesh;
-    List<Hex> path;
+    LinkedList<Vector2> Path;
+#if UNITY_EDITOR
+    List<Hex> TestedHex;
+    List<Hex> HexInPath;
+#endif
     // Use this for initialization
     void Start () {
 
@@ -19,7 +23,8 @@ public class NavMesh : MonoBehaviour {
         mNavObstacles = new List<NavMeshObstacle>(FindObjectsOfType<NavMeshObstacle>());
         mNavMeshActors = new List<NavMeshActor>(FindObjectsOfType<NavMeshActor>());
         mNavMesh = new NavMeshPath(mFloorMesh.bounds.size.x * HexScale, mFloorMesh.bounds.size.y * HexScale, HexScale, WorldToGridRatio, mNavObstacles, mNavMeshActors);
-        path = new List<Hex>();
+        Path = new LinkedList<Vector2>();
+
     }
 
     // Update is called once per frame
@@ -31,16 +36,30 @@ public class NavMesh : MonoBehaviour {
         }
         if (Input.GetMouseButton(0))
         {
-            path = mNavMesh.GetPath(mNavMeshActors[0].transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            mNavMeshActors[0].SetPath(path);          
+#if UNITY_EDITOR
+            Path = mNavMesh.GetPath(mNavMeshActors[0].transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition), ref HexInPath, ref TestedHex);
+#else
+            Path = mNavMesh.GetPath(mNavMeshActors[0].transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+#endif
+            mNavMeshActors[0].SetPath(Path);          
         }
 
-        foreach (Hex hex in path)
+#if UNITY_EDITOR
+        if (TestedHex != null)
         {
-            GridHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.red);
+            foreach (Hex hex in TestedHex)
+            {
+                GridHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.blue);
+            } 
         }
 
+        if (HexInPath != null)
+        {
+            foreach (Hex hex in HexInPath)
+            {
+                GridHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.red);
+            } 
+        }
+#endif
     }
-
-
 }
