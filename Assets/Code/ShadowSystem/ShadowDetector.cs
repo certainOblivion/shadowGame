@@ -73,9 +73,9 @@ namespace Visibility
         /// <summary>
         /// Add a rectangle shaped occluder
         /// </summary>        
-        public void AddRectangleOccluder(Vector2 center, float width, float height, float rotation)
+        public void AddRectangleOccluder(Vector2 center, float width, float height, float rotationInRadian)
         {
-            Vector2[] corners = MathHelper.GetRectangleCorners(center, width, height, rotation);
+            Vector2[] corners = MathHelper.GetRectangleCorners(center, width, height, rotationInRadian);
 
             AddSegment(corners[0], corners[1]);
             AddSegment(corners[1], corners[2]);

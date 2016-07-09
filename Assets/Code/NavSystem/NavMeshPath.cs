@@ -55,8 +55,6 @@ public class NavMeshPath
         }
     }
 
-
-
     public void AddObstacle(NavMeshObstacle obstacle)
     {
         Vector2 obstacleCenter = new Vector2(obstacle.gameObject.transform.position.x, obstacle.gameObject.transform.position.y);
@@ -78,7 +76,7 @@ public class NavMeshPath
 #if UNITY_EDITOR
     public LinkedList<Vector2> GetPath(Vector2 start, Vector2 destination,ref List<Hex> hexInPath, ref List<Hex> testedHex)
 #else
-    public List<Hex> GetPath(Vector2 start, Vector2 destination)
+    public LinkedList<Vector2> GetPath(Vector2 start, Vector2 destination)
 #endif
     {
         Hex startHex = GridHelper.Vector2ToHex(start, NavMap.MapLayout);
@@ -127,54 +125,64 @@ public class NavMeshPath
                 }
             } 
         }
-#if UNITY_EDITOR
-        return SmoothPath(came_from,startHex, destinationHex,ref hexInPath);
-#else
-        return SmoothPath(came_from,startHex, destinationHex);
-#endif
-    }
-#if UNITY_EDITOR
-    LinkedList<Vector2> SmoothPath( Dictionary<Hex, Hex> pathMap,Hex start, Hex destination, ref List<Hex> hexInPath)
-#else
-    LinkedList<Vector2> SmoothPath( Dictionary<Hex, Hex> pathMap,Hex start, Hex destination)
-#endif
-    {
-        LinkedList<Vector2> path = new LinkedList<Vector2>();
 
-#if UNITY_EDITOR
-        hexInPath = new List<Hex>();
-#endif
-
-        Hex current = destination;
-        Hex next = pathMap[current];
-        Hex afterNext = pathMap[next];
-        bool reachedStart = false;
-        while (!afterNext.Equals(start))
+        LinkedList<Vector2> path = null;
+        if (came_from.Count > 0)
         {
-            while (IsVisible(current, afterNext) && !reachedStart)
-            {
-                next = afterNext;
-                afterNext = pathMap[next];
-                reachedStart = afterNext.Equals(start);
-            }
-            path.AddFirst(GridHelper.HexToVector2(current, NavMap.MapLayout));
+             path = new LinkedList<Vector2>();
 #if UNITY_EDITOR
-            hexInPath.Add(current);
+            hexInPath = new List<Hex>();
 #endif
-            current = next;
+            Hex currentHex = destinationHex;
+            while (!came_from[currentHex].Equals(startHex))
+            {
+#if UNITY_EDITOR
+                hexInPath.Add(currentHex);
+#endif
+                path.AddFirst(GridHelper.HexToVector2(currentHex, NavMap.MapLayout));
+                currentHex = came_from[currentHex];
+            }
+
+            path.AddFirst(start);
+            SmoothPath(path); 
         }
 
-         return path;
+        return path;
+    }
+
+    void SmoothPath(LinkedList<Vector2> path)
+    {
+        if (path == null || path.Count == 0)
+        {
+            return;
+        }
+        LinkedListNode<Vector2> source = path.First;
+        LinkedListNode<Vector2> nodeToDelete = source.Next;
+
+        while (nodeToDelete.Next != null)
+        {
+            if (IsVisible(source.Value, nodeToDelete.Next.Value))
+            {
+                LinkedListNode<Vector2> temp = nodeToDelete;
+                nodeToDelete = nodeToDelete.Next;
+                path.Remove(temp);
+            }
+            else
+            {
+                source = nodeToDelete;
+                nodeToDelete = source.Next;
+            }
+        }
     }
 
     float CalculateHeuristic(Hex a, Hex b)
     {
-        return (GridHelper.AccurateDistance(a, b, NavMap.MapLayout) * 5)/* + (Hex.Distance(a, b) *.01f)*/;
+        return /*(GridHelper.AccurateDistance(a, b, NavMap.MapLayout) * 0.3f) +*/ (Hex.Distance(a, b)/* *.7f*/);
     }
 
-    bool IsVisible(Hex observer, Hex destination)
+    bool IsVisible(Vector2 observer, Vector2 destination)
     {
-        List<Hex> hexesInBetween = FractionalHex.HexLinedraw(observer, destination);
+        List<Hex> hexesInBetween = FractionalHex.HexLinedraw(GridHelper.Vector2ToHex(observer, NavMap.MapLayout), GridHelper.Vector2ToHex(destination, NavMap.MapLayout));
 
         foreach (Hex hex in hexesInBetween)
         {

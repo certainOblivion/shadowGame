@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShadowCaster : MonoBehaviour {
+public class ShadowCaster : IObject {
 
 	// Use this for initialization
 	void Start () {

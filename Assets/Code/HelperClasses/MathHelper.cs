@@ -60,17 +60,17 @@ namespace Helper
             return rotatedPoint;
         }
 
-        public static Vector2[] GetRectangleCorners(Vector2 center, float width, float height, float rotation)
+        public static Vector2[] GetRectangleCorners(Vector2 center, float width, float height, float rotationInRadians)
         {
             Vector2 topLeft = new Vector2(center.x - (width / 2), center.y + (height / 2));
             Vector2 topRight = new Vector2(center.x + (width / 2), center.y + (height / 2));
             Vector2 bottomLeft = new Vector2(center.x - (width / 2), center.y - (height / 2));
             Vector2 bottomRight = new Vector2(center.x + (width / 2), center.y - (height / 2));
 
-            Vector2 rotatedTopLeft = RotatePoint(topLeft, center, rotation);
-            Vector2 rotatedTopRight = RotatePoint(topRight, center, rotation);
-            Vector2 rotatedBottomLeft = RotatePoint(bottomLeft, center, rotation);
-            Vector2 rotatedBottomRight = RotatePoint(bottomRight, center, rotation);
+            Vector2 rotatedTopLeft = RotatePoint(topLeft, center, rotationInRadians);
+            Vector2 rotatedTopRight = RotatePoint(topRight, center, rotationInRadians);
+            Vector2 rotatedBottomLeft = RotatePoint(bottomLeft, center, rotationInRadians);
+            Vector2 rotatedBottomRight = RotatePoint(bottomRight, center, rotationInRadians);
 
             Vector2[] cornerList = { rotatedTopLeft, rotatedTopRight, rotatedBottomRight, rotatedBottomLeft };
 

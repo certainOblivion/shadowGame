@@ -1,10 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Grid;
+using System.Collections.Generic;
 
+#if UNITY_EDITOR
 namespace Helper
 {
     public class DebugDrawHelper
     {
+
+        public static void DrawHex(Layout layout, Hex hex, Color color, bool filled = false)
+        {
+            List<Point> corners = Layout.PolygonCorners(layout, hex);
+            List<Vector2> arrayOfCorners = new List<Vector2>(corners.Count);
+
+            foreach (Point corner in corners)
+            {
+                arrayOfCorners.Add(GridHelper.PointToVector2(corner));
+            }
+
+            DebugDrawHelper.DrawHex(arrayOfCorners.ToArray(), color, filled);
+        }
+
         public static Color ValidateColor(Color color)
         {
             return (color == default(Color)) ? Color.black : color;
@@ -90,7 +107,6 @@ namespace Helper
             Debug.DrawLine(start, end, color, duration, depthTest);
         }
 
-    }     
-    
-
+    }
 }
+#endif

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NavMeshObstacle : MonoBehaviour {
+public class NavMeshObstacle : IObject {
 
 	// Use this for initialization
 	void Start () {

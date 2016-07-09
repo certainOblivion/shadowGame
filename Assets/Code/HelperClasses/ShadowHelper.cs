@@ -5,6 +5,7 @@ namespace Helper
 {
     public class ShadowHelper
     {
+#if UNITY_EDITOR
         public static void DrawVisibility(Vector2[] encounters, Vector2 lightposition, Color color = default(Color))
         {
             color = DebugDrawHelper.ValidateColor(color);
@@ -14,5 +15,6 @@ namespace Helper
                 DebugDrawHelper.DrawLine(encounters[i - 1], encounters[i], color);
             }
         }
+#endif
     } 
 }

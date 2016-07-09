@@ -49,15 +49,15 @@ public class NavMesh : MonoBehaviour {
         {
             foreach (Hex hex in TestedHex)
             {
-                GridHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.blue);
+                DebugDrawHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.blue);
             } 
         }
-
+        
         if (HexInPath != null)
         {
             foreach (Hex hex in HexInPath)
             {
-                GridHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.red);
+                DebugDrawHelper.DrawHex(mNavMesh.NavMap.MapLayout, hex, Color.red);
             } 
         }
 #endif
